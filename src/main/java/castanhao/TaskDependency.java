@@ -11,6 +11,8 @@ public class TaskDependency {
 
     private Task childTask;
 
+    private TaskDependencyType type;
+
     public Task getParentTask() {
         return parentTask;
     }
@@ -25,5 +27,13 @@ public class TaskDependency {
 
     public void setChildTask(Task childTask) {
         this.childTask = childTask;
+    }
+
+    public TaskDependencyType getType() {
+        return type;
+    }
+
+    public void setType(TaskDependencyType type) {
+        this.type = type;
     }
 }
