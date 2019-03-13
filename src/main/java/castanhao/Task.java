@@ -32,6 +32,8 @@ public class Task {
 
     private String calculatedParentTaskId;
 
+    private Instant calculatedEnd;
+
     /**
      * CHILD TASKS!
      */
@@ -69,6 +71,17 @@ public class Task {
         return calculatedStart;
     }
 
+    public Instant getCalculatedEnd() {
+        if (calculatedEnd == null && calculatedStart != null) {
+            return calculatedStart.plus(duration);
+        }
+        return calculatedEnd;
+    }
+
+    public void setCalculatedEnd(Instant calculatedEnd) {
+        this.calculatedEnd = calculatedEnd;
+    }
+
     public void setCalculatedStart(Instant calculatedStart) {
         this.calculatedStart = calculatedStart;
     }
@@ -80,4 +93,5 @@ public class Task {
     public void setCalculatedParentTaskId(String calculatedParentTaskId) {
         this.calculatedParentTaskId = calculatedParentTaskId;
     }
+
 }

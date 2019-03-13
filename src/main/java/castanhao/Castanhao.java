@@ -31,6 +31,9 @@ public class Castanhao {
         TaskDependency task5_2 = new TaskDependency(task5, task2);
         task5.addDependency(task5_2);
 
+        Task task6 = new Task(6, 6);
+        TaskDependency task6_1 = new TaskDependency(task6, task1, TaskDependencyType.FINISH_TO_FINISH);
+        task6.addDependency(task6_1);
 
         Set<Task> taskList = new HashSet<>();
         taskList.add(task1);
@@ -38,6 +41,7 @@ public class Castanhao {
         taskList.add(task3);
         taskList.add(task4);
         taskList.add(task5);
+        taskList.add(task6);
 
         GraphResolver resolver = new GraphResolver();
         resolver.setStartDate(startDate);
@@ -45,7 +49,6 @@ public class Castanhao {
         resolver.resolve();
 
         resolver.print();
-
 
 
     }

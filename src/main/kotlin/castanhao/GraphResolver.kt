@@ -81,8 +81,21 @@ class GraphResolver {
             if (parents != null && parents.isNotEmpty()) {
                 val calculatedParents = parents.map { taskMap[it] }.filter { it!!.calculatedStart != null }
                 val biggerDateTask = calculatedParents.maxBy { it!!.calculatedStart }
-                currentTask.calculatedParentTaskId = biggerDateTask!!.taskId
-                currentTask.calculatedStart = biggerDateTask.calculatedStart.plus(biggerDateTask.duration)
+
+                val dependency: TaskDependency = getDependency(parentTask, currentTask)!!
+
+                when (dependency.type) {
+                    TaskDependencyType.FINISH_TO_START -> {
+                        currentTask.calculatedParentTaskId = biggerDateTask!!.taskId
+                        currentTask.calculatedStart = biggerDateTask.calculatedStart.plus(biggerDateTask.duration)
+                    }
+                    TaskDependencyType.FINISH_TO_FINISH -> {
+                        currentTask.calculatedParentTaskId = biggerDateTask!!.taskId
+                        currentTask.calculatedEnd = biggerDateTask.calculatedEnd
+                        currentTask.calculatedStart = currentTask.calculatedEnd.minus(currentTask.duration)
+                    }
+                }
+
             } else {
                 currentTask.calculatedParentTaskId = parentTask.taskId
                 currentTask.calculatedStart = cursorDate
@@ -94,6 +107,16 @@ class GraphResolver {
             isParentOf[currentTask.taskId]!!.forEach { calculateChild(parentTask = currentTask, currentTask = taskMap[it]!!, cursorDate = currentTask.calculatedStart) }
         }
 
+    }
+
+    private fun getDependency(parentTask: Task, currentTask: Task): TaskDependency? {
+        // TODO improve
+        for (it in dependencySet) {
+            if (it.parentTask.taskId == parentTask.taskId && it.childTask.taskId == currentTask.taskId) {
+                return it
+            }
+        }
+        return null
     }
 
     fun print() {

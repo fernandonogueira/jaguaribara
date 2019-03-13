@@ -7,11 +7,17 @@ public class TaskDependency {
         this.childTask = childTask;
     }
 
+    public TaskDependency(Task parentTask, Task childTask, TaskDependencyType type) {
+        this.parentTask = parentTask;
+        this.childTask = childTask;
+        this.type = type;
+    }
+
     private Task parentTask;
 
     private Task childTask;
 
-    private TaskDependencyType type;
+    private TaskDependencyType type = TaskDependencyType.FINISH_TO_START;
 
     public Task getParentTask() {
         return parentTask;
